@@ -5,9 +5,13 @@ app.use(express.json());
 const pool = require('./db');
 const initDb = require('./db/initDb');
 const centerOpt = require('./modules/center_opt');
+const masterData = require('./modules/master_data');
+const employeeOpt = require('./modules/employee_opt');
 const _app_Port = 5025;
 
 app.use('/centers', centerOpt.router);
+app.use('/master', masterData.router);
+app.use('/employees', employeeOpt.router);
 
 app.get('/users', async (req, res) => {
   try {
