@@ -1,0 +1,17 @@
+# Secrets - never copy into the image (it is pushed to Docker Hub)
+.env
+.env.*
+
+# Installed inside the image with npm ci
+node_modules
+
+# Not needed at runtime
+.git
+.github
+.gitignore
+.dockerignore
+Dockerfile
+dist
+npm-debug.log*
+*.md
+.vscode
