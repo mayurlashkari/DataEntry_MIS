@@ -3,7 +3,12 @@ const express = require('express')
 const app = express();
 app.use(express.json());
 const pool = require('./db');
+const initDb = require('./db/initDb');
+const centerOpt = require('./modules/center_opt');
 const _app_Port = 5025;
+
+app.use('/centers', centerOpt.router);
+
 app.get('/users', async (req, res) => {
   try {
     const users = await getUsers();
@@ -22,8 +27,14 @@ async function getUsers() {
 
 
 
-app.listen(_app_Port,async ()=>{
-   
-    console.log("listening on "+ _app_Port +" ");
-
-});
+// Create tables / insert master data first, then start accepting requests.
+initDb()
+  .then(() => {
+    app.listen(_app_Port, () => {
+      console.log("listening on " + _app_Port + " ");
+    });
+  })
+  .catch((err) => {
+    console.error('Database initialisation failed:', err.message);
+    process.exit(1);
+  });
