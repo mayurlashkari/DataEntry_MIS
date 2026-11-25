@@ -35,6 +35,11 @@ initDb()
     });
   })
   .catch((err) => {
-    console.error('Database initialisation failed:', err.message);
+    // Log the whole error: some (e.g. ECONNREFUSED AggregateError) have an empty message.
+    console.error(
+      `Database initialisation failed (host=${process.env.PGHOST || '<not set>'}, ` +
+        `port=${process.env.PGPORT || '<not set>'}, db=${process.env.PGDATABASE || '<not set>'}):`,
+      err
+    );
     process.exit(1);
   });
